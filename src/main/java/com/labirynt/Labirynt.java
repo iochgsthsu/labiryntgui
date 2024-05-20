@@ -19,6 +19,7 @@ public class Labirynt {
    private int[] Poczatek;
    private int[] Koniec;
    private Pole[][] Zawartosc;
+   private boolean Rozwiazany;
 
    Labirynt(int iloscWierszy, int iloscKolumn, Pole[][] Zawartosc, int[] Poczatek, int[] Koniec) {
       this.iloscWierszy = iloscWierszy;
@@ -26,6 +27,7 @@ public class Labirynt {
       this.Zawartosc = Zawartosc;
       this.Poczatek = Poczatek;
       this.Koniec = Koniec;
+      this.Rozwiazany = false;
    }
 
    public void printLabirynt() {
@@ -68,6 +70,10 @@ public class Labirynt {
       this.Koniec[0] = x;
       this.Koniec[1] = y;
    }
+   
+   public void setRozwiazany(boolean b){
+       this.Rozwiazany = b;
+   }
 
    public void getInfo() {
       if (this != null) {
@@ -91,6 +97,9 @@ public class Labirynt {
 
    public void jestSciezka(int x, int y) {
       this.Zawartosc[x][y].setSciezka();
+   }
+   public boolean czyRozwiazany(){
+       return this.Rozwiazany;
    }
 
    public Stack BFS() {
@@ -138,6 +147,7 @@ public class Labirynt {
                      this.setOdwiedzony(r, c);
                      q.add(p_tmp);
                      if (t == 'K') {
+                        this.setRozwiazany(true);
                         return s;
                      }
                   }

@@ -18,12 +18,16 @@ import javax.swing.Scrollable;
  *
  * @author adam
  */
-public class drawLabirynt extends JComponent implements Scrollable {
+public class Rysowanie extends JComponent implements Scrollable {
+   private int wielkoscPola;
+   private int wcP;
     
    private Labirynt l;
 
-   public drawLabirynt(Labirynt l) {
+   public Rysowanie(Labirynt l) {
       this.l = l;
+      this.wielkoscPola = 20;
+      this.wcP = this.wielkoscPola;
       this.setPreferredSize(new Dimension(100, 100));
    }
 
@@ -32,7 +36,6 @@ public class drawLabirynt extends JComponent implements Scrollable {
       Graphics2D g2d = (Graphics2D)g;
       if (this.l != null) {
          this.getPreferredSize();
-         g2d.setFont(new Font("Arial", 1, 15));
 
          for(int i = 0; i < this.l.getIloscWierszy(); ++i) {
             for(int j = 0; j < this.l.getIloscKolumn(); ++j) {
@@ -40,28 +43,26 @@ public class drawLabirynt extends JComponent implements Scrollable {
                Color c;
                if (p.getDane() == 'X') {
                   c = Color.BLACK;
-               } else if (p.getSciezka()) {
-                  c = Color.RED;
-               } else {
-                  if (p.getDane() == 'P') {
-                     c = Color.WHITE;
-                     g2d.drawString("P", 30 * j + 15, 30 * i + 15);
-                     continue;
-                  }
-
-                  if (p.getDane() == 'K') {
-                     c = Color.WHITE;
-                     g2d.drawString("K", 30 * j + 15, 30 * i + 15);
-                     continue;
-                  }
-
-                  c = Color.WHITE;
                }
+               else if (p.getDane() == 'P') {
+                     c = Color.BLUE;
+                  }
+                 else if (p.getDane() == 'K') {
+                     c = Color.GREEN;
+                  } else if (p.getSciezka()) {
+                  c = Color.RED;
+               }
+               else
+                  {
+                      c = Color.WHITE;
+                  }
+
+               
 
                g2d.setColor(c);
-               g2d.fillRect(30 * j, 30 * i, 30, 30);
+               g2d.fillRect(this.wielkoscPola * j, this.wielkoscPola * i, this.wielkoscPola, this.wielkoscPola);
                g2d.setColor(Color.BLACK);
-               g2d.drawRect(30 * j, 30 * i, 30, 30);
+               g2d.drawRect(this.wielkoscPola * j, this.wielkoscPola * i, this.wielkoscPola, this.wielkoscPola);
             }
          }
       }
@@ -69,15 +70,23 @@ public class drawLabirynt extends JComponent implements Scrollable {
    }
 
    public Dimension getPreferredSize() {
-      return this.l != null ? new Dimension(this.l.getIloscWierszy() * 30, this.l.getIloscKolumn() * 30) : new Dimension(100, 100);
+      return this.l != null ? new Dimension(this.l.getIloscWierszy() * this.wielkoscPola, this.l.getIloscKolumn() * this.wielkoscPola) : new Dimension(100, 100);
    }
 
    public void setLabirynt(Labirynt l) {
       this.l = l;
    }
+   
+   public int getWielkosc(){
+       
+       return this.wielkoscPola;
+   }
+   public int getwcP(){
+       return this.wcP;
+   }
 
    public Dimension getPreferredScrollableViewportSize() {
-      return new Dimension(1048, 512);
+      return new Dimension(1024, 512);
    }
 
    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
@@ -96,6 +105,8 @@ public class drawLabirynt extends JComponent implements Scrollable {
       return this.getPreferredSize().height <= this.getParent().getSize().height;
    }
     
-    
+   public void setWielkosc(int w){
+       this.wielkoscPola = w;
+   }
     
 }
