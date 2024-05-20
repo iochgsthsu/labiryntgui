@@ -30,6 +30,7 @@ public class GUI extends JFrame implements ActionListener {
    private JButton buttonPrintLab;
    private JButton buttonLabInfo;
    private JButton buttonSolve;
+   private JButton buttonZapiszZdj;
    private JLabel labelWiel;
    private JComboBox cbWielkosc;
    private Rysowanie dl;
@@ -64,6 +65,9 @@ public class GUI extends JFrame implements ActionListener {
       this.buttonSolve = new JButton("Rozwiaz labirynt");
       this.buttonSolve.addActionListener(this);
       
+      this.buttonZapiszZdj = new JButton("Zapisz labirynt jako zdjęcie");
+      this.buttonZapiszZdj.addActionListener(this);
+      
       this.labelWiel = new JLabel("Wybierz wielkość pola");
       
       String [] s ={ "25%", "50%", "75%", "100%", "125%", "150%", "175%", "200%", "300%"};
@@ -77,7 +81,7 @@ public class GUI extends JFrame implements ActionListener {
       this.setTitle("Labirynt");
       this.setSize(1300, 700);
       this.setVisible(true);
-      this.setDefaultCloseOperation(3);
+      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       this.setResizable(false);
       
       przy.add(this.buttonOtwPlik);
@@ -86,6 +90,7 @@ public class GUI extends JFrame implements ActionListener {
       przy.add(this.buttonSolve);
       przy.add(this.labelWiel);
       przy.add(this.cbWielkosc);
+      przy.add(this.buttonZapiszZdj);
       
       scr.add(this.sp, "East");
       
@@ -142,6 +147,11 @@ public class GUI extends JFrame implements ActionListener {
          } else {
             System.out.println("Nie wybrano labiyrntu!");
          }
+      }
+      
+      if (ae.getSource() == this.buttonZapiszZdj) {
+          dl.zapiszZdjecie();
+         
       }
       
       if(ae.getSource() == this.cbWielkosc){
