@@ -31,6 +31,7 @@ public class GUI extends JFrame implements ActionListener {
    private JButton buttonLabInfo;
    private JButton buttonSolve;
    private JButton buttonZapiszZdj;
+   private JButton buttonZapiszTekst;
    private JLabel labelWiel;
    private JComboBox cbWielkosc;
    private Rysowanie dl;
@@ -65,8 +66,12 @@ public class GUI extends JFrame implements ActionListener {
       this.buttonSolve = new JButton("Rozwiaz labirynt");
       this.buttonSolve.addActionListener(this);
       
+      this.buttonZapiszTekst = new JButton("Zapisz labirynt jako plik tekstowy");
+      this.buttonZapiszTekst.addActionListener(this);
+      
       this.buttonZapiszZdj = new JButton("Zapisz labirynt jako zdjęcie");
       this.buttonZapiszZdj.addActionListener(this);
+      
       
       this.labelWiel = new JLabel("Wybierz wielkość pola");
       
@@ -90,6 +95,7 @@ public class GUI extends JFrame implements ActionListener {
       przy.add(this.buttonSolve);
       przy.add(this.labelWiel);
       przy.add(this.cbWielkosc);
+      przy.add(this.buttonZapiszTekst);
       przy.add(this.buttonZapiszZdj);
       
       scr.add(this.sp, "East");
@@ -151,6 +157,14 @@ public class GUI extends JFrame implements ActionListener {
       
       if (ae.getSource() == this.buttonZapiszZdj) {
           dl.zapiszZdjecie();
+         
+      }
+      
+      if (ae.getSource() == this.buttonZapiszTekst) {
+          if(l!=null){
+              l.zapisTekst();
+          }
+          
          
       }
       

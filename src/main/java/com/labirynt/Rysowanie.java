@@ -112,15 +112,19 @@ public class Rysowanie extends JComponent implements Scrollable {
         if (l != null) {
             JFileChooser fc = new JFileChooser();
             int w = fc.showSaveDialog(null);
-            BufferedImage bi = new BufferedImage(this.wielkoscPola * l.getIloscWierszy(), this.wielkoscPola * l.getIloscKolumn(), BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2d = bi.createGraphics();
-            this.paintAll(g2d);
-            try {
-                if (ImageIO.write(bi, "png", new File(fc.getSelectedFile().getAbsolutePath() + ".png"))) {
+            if (w == 0) {
+
+                BufferedImage bi = new BufferedImage(this.wielkoscPola * l.getIloscWierszy(), this.wielkoscPola * l.getIloscKolumn(), BufferedImage.TYPE_INT_RGB);
+                Graphics2D g2d = bi.createGraphics();
+                this.paintAll(g2d);
+                try {
+                    if (ImageIO.write(bi, "png", new File(fc.getSelectedFile().getAbsolutePath() + ".png"))) {
+                    }
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+
                 }
-
-            } catch (IOException ex) {
-
             }
         } else {
             System.out.println("Nie wybrano labiryntu");
