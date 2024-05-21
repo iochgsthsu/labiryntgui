@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -32,7 +33,12 @@ public class GUI extends JFrame implements ActionListener {
    private JButton buttonSolve;
    private JButton buttonZapiszZdj;
    private JButton buttonZapiszTekst;
+   private JButton buttonZapiszBin;
+   private JButton buttonUstawP;
+   private JButton buttonUstawK;
    private JLabel labelWiel;
+   private JLabel labelZapis;
+   private JLabel labelZnaczniki;
    private JComboBox cbWielkosc;
    private Rysowanie dl;
    private JScrollPane sp;
@@ -53,7 +59,7 @@ public class GUI extends JFrame implements ActionListener {
       JPanel przy = new JPanel();
       BoxLayout bl = new BoxLayout(przy, BoxLayout.Y_AXIS);
       BorderLayout br = new BorderLayout();
-      przy.setLayout(new GridLayout(20, 20, 10,5));
+      przy.setLayout(new GridLayout(15, 15, 5,5));
       this.buttonOtwPlik = new JButton("Wybierz plik");
       this.buttonOtwPlik.addActionListener(this);
       
@@ -63,17 +69,27 @@ public class GUI extends JFrame implements ActionListener {
       this.buttonLabInfo = new JButton("Wypisz informacje");
       this.buttonLabInfo.addActionListener(this);
       
-      this.buttonSolve = new JButton("Rozwiaz labirynt");
+      this.buttonSolve = new JButton("Rozwiąż labirynt");
       this.buttonSolve.addActionListener(this);
       
-      this.buttonZapiszTekst = new JButton("Zapisz labirynt jako plik tekstowy");
+      this.buttonZapiszTekst = new JButton("Zapisz jako plik tekstowy");
       this.buttonZapiszTekst.addActionListener(this);
       
-      this.buttonZapiszZdj = new JButton("Zapisz labirynt jako zdjęcie");
+      this.buttonZapiszZdj = new JButton("Zapisz jako zdjęcie");
       this.buttonZapiszZdj.addActionListener(this);
       
+      this.buttonZapiszBin = new JButton("Zapisz jako plik binarny");
       
-      this.labelWiel = new JLabel("Wybierz wielkość pola");
+      this.buttonUstawK = new JButton("Ustaw koniec");
+      
+      this.buttonUstawP = new JButton("Ustaw początek");
+      
+      
+      
+      this.labelWiel = new JLabel("Wybierz wielkość labiryntu (%)");
+      this.labelZapis = new JLabel("Wybierz metode zapisu labiryntu");
+      this.labelZnaczniki = new JLabel("Ustaw znacznik labiryntu");
+      
       
       String [] s ={ "25%", "50%", "75%", "100%", "125%", "150%", "175%", "200%", "300%"};
       this.cbWielkosc = new JComboBox(s);
@@ -92,10 +108,15 @@ public class GUI extends JFrame implements ActionListener {
       przy.add(this.buttonOtwPlik);
       //przy.add(this.buttonPrintLab);
       //przy.add(this.buttonLabInfo);
-      przy.add(this.buttonSolve);
+  przy.add(this.buttonSolve);
+      przy.add(this.labelZnaczniki);
+      przy.add(this.buttonUstawP);
+      przy.add(this.buttonUstawK);
       przy.add(this.labelWiel);
       przy.add(this.cbWielkosc);
+        przy.add(this.labelZapis);
       przy.add(this.buttonZapiszTekst);
+      przy.add(this.buttonZapiszBin);
       przy.add(this.buttonZapiszZdj);
       
       scr.add(this.sp, "East");
@@ -128,16 +149,16 @@ public class GUI extends JFrame implements ActionListener {
          if (this.l != null) {
             this.l.printLabirynt();
          } else {
-            System.out.println("Nie wybrano labiyrntu!");
+            JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
          }
       }
 
       if (ae.getSource() == this.buttonSolve) {
          if (this.l == null) {
-            System.out.println("Nie wybrano labiyrntu!");
+            JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
          }
          else if(l.czyRozwiazany() == true){
-             System.out.println("Labirynt juz rozwiazany");
+             JOptionPane.showMessageDialog(this, "Labirynt już został rozwiązany!", "Labirynt: info", JOptionPane.INFORMATION_MESSAGE);
          }
          else {
             Stack st = this.l.BFS();
@@ -151,18 +172,28 @@ public class GUI extends JFrame implements ActionListener {
          if (this.l != null) {
             this.l.getInfo();
          } else {
-            System.out.println("Nie wybrano labiyrntu!");
+            JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
          }
       }
       
       if (ae.getSource() == this.buttonZapiszZdj) {
-          dl.zapiszZdjecie();
+          if(l!=null){
+              dl.zapiszZdjecie();
+          }
+          else{
+              JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE); 
+          }
+          
          
       }
       
       if (ae.getSource() == this.buttonZapiszTekst) {
           if(l!=null){
               l.zapisTekst();
+          }
+          else
+          {
+            JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);  
           }
           
          

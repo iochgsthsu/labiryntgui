@@ -126,8 +126,6 @@ public class Rysowanie extends JComponent implements Scrollable {
 
                 }
             }
-        } else {
-            System.out.println("Nie wybrano labiryntu");
         }
     }
 
