@@ -5,6 +5,7 @@
 package com.labirynt;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -26,7 +30,7 @@ import javax.swing.JScrollPane;
  */
 
 
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener, ChangeListener {
    private JButton buttonOtwPlik;
    private JButton buttonPrintLab;
    private JButton buttonLabInfo;
@@ -39,9 +43,10 @@ public class GUI extends JFrame implements ActionListener {
    private JLabel labelWiel;
    private JLabel labelZapis;
    private JLabel labelZnaczniki;
-   private JComboBox cbWielkosc;
+  // private JComboBox cbWielkosc;
    private Rysowanie dl;
    private JScrollPane sp;
+   private JSlider slid;
    private String sciezkaPliku;
    private int iw;
    private int ik;
@@ -59,7 +64,7 @@ public class GUI extends JFrame implements ActionListener {
       JPanel przy = new JPanel();
       BoxLayout bl = new BoxLayout(przy, BoxLayout.Y_AXIS);
       BorderLayout br = new BorderLayout();
-      przy.setLayout(new GridLayout(15, 15, 5,5));
+      przy.setLayout(new GridLayout(15, 5, 3,10));
       this.buttonOtwPlik = new JButton("Wybierz plik");
       this.buttonOtwPlik.addActionListener(this);
       
@@ -86,24 +91,29 @@ public class GUI extends JFrame implements ActionListener {
       
       
       
-      this.labelWiel = new JLabel("Wybierz wielkość labiryntu (%)");
-      this.labelZapis = new JLabel("Wybierz metode zapisu labiryntu");
+      this.labelWiel = new JLabel("Wybierz wielkość labiryntu");
+      this.labelZapis = new JLabel("Wybierz metodę zapisu labiryntu");
       this.labelZnaczniki = new JLabel("Ustaw znacznik labiryntu");
       
       
-      String [] s ={ "25%", "50%", "75%", "100%", "125%", "150%", "175%", "200%", "300%"};
+      /*String [] s ={ "25%", "50%", "100%", "150%", "200%", "300%"};
       this.cbWielkosc = new JComboBox(s);
-      this.cbWielkosc.setSelectedIndex(3);
-      this.cbWielkosc.addActionListener(this);
+      this.cbWielkosc.setSelectedIndex(2);
+      this.cbWielkosc.addActionListener(this);*/
+      slid = new JSlider(3, 27, 15);
+      slid.addChangeListener(this);
+  
+
+
       
-      this.dl = new Rysowanie(null);
+      this.dl = new Rysowanie(null, this);
       this.sp = new JScrollPane(this.dl);
       
       this.setTitle("Labirynt");
-      this.setSize(1300, 700);
+      this.setSize(1600, 900);
       this.setVisible(true);
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      this.setResizable(false);
+      this.setResizable(true);
       
       przy.add(this.buttonOtwPlik);
       //przy.add(this.buttonPrintLab);
@@ -113,7 +123,7 @@ public class GUI extends JFrame implements ActionListener {
       przy.add(this.buttonUstawP);
       przy.add(this.buttonUstawK);
       przy.add(this.labelWiel);
-      przy.add(this.cbWielkosc);
+      przy.add(this.slid);
         przy.add(this.labelZapis);
       przy.add(this.buttonZapiszTekst);
       przy.add(this.buttonZapiszBin);
@@ -127,6 +137,15 @@ public class GUI extends JFrame implements ActionListener {
       this.add(cont);
    }
    @Override
+   public void stateChanged(ChangeEvent ce){
+       
+       dl.setWielkosc(dl.getwcP()*(slid.getValue()));
+       this.dl.revalidate();
+       this.dl.repaint();
+       
+   }
+   
+   @Override
    public void actionPerformed(ActionEvent ae) {
       if (ae.getSource() == this.buttonOtwPlik) {
          JFileChooser filech = new JFileChooser();
@@ -134,13 +153,9 @@ public class GUI extends JFrame implements ActionListener {
          if (w == 0) {
             File file = new File(filech.getSelectedFile().getAbsolutePath());
             this.sciezkaPliku = file.getAbsolutePath();
-            this.iw = OdczytPliku.odczytajIloscWierszy(this.sciezkaPliku);
-            this.ik = OdczytPliku.odczytajIloscKolumn(this.sciezkaPliku);
-            this.zaw = OdczytPliku.odczytajZawartoscPliku(this.iw, this.ik, this.sciezkaPliku);
-            this.pcz = OdczytPliku.odczytajWPoczatku(this.sciezkaPliku);
-            this.kn = OdczytPliku.odczytajWKonca(this.sciezkaPliku);
-            this.l = new Labirynt(this.iw, this.ik, this.zaw, this.pcz, this.kn);
+            this.l = new Labirynt(new OdczytPlikuTekstowego(this.sciezkaPliku));
             l.setRozwiazany(false);
+            dl.setWielkosc(slid.getValue()*dl.getwcP());
             this.narysujLabirynt();
          }
       }
@@ -199,50 +214,38 @@ public class GUI extends JFrame implements ActionListener {
          
       }
       
-      if(ae.getSource() == this.cbWielkosc){
+      /*if(ae.getSource() == this.cbWielkosc){
           int w = dl.getwcP();
           switch((String)cbWielkosc.getSelectedItem()){
               case "25%":{
-                  dl.setWielkosc(w/4);
-                  break;
-              }
-              case "50%":{
                   dl.setWielkosc(w/2);
                   break;
               }
-              case "75%":{
-                  dl.setWielkosc((w*3)/4);
+              case "50%":{
+                  dl.setWielkosc((int)(Math.sqrt(1/2)*w));
                   break;
               }
               case "100%":{
                   dl.setWielkosc(w);
                   break;
               }
-              case "125%":{
-                  dl.setWielkosc((w*5)/4);
-                  break;
-              }
               case "150%":{
-                  dl.setWielkosc((w*6)/4);
-                  break;
-              }
-              case "175%":{
-                  dl.setWielkosc((w*8)/4);
+                  dl.setWielkosc((int)((Math.sqrt(3/2)*w)));
                   break;
               }
               case "200%":{
-                  dl.setWielkosc(2*w);
+                  dl.setWielkosc((int)(Math.sqrt(2)*w));
                   break;
               }
               case "300%":{
-                  dl.setWielkosc(3*w);
+                  dl.setWielkosc((int)(Math.sqrt(3)*w));
                   break;
               }
    
           }
           this.dl.revalidate();
           this.dl.repaint();
-      }
+      }*/
 
    }
 
@@ -251,4 +254,8 @@ public class GUI extends JFrame implements ActionListener {
       this.dl.revalidate();
       this.dl.repaint();
    }
+   
+   public Dimension getFrameDim(){
+    return this.getContentPane().getSize();
+}
 }

@@ -25,14 +25,16 @@ public class Rysowanie extends JComponent implements Scrollable {
 
     private int wielkoscPola;
     private int wcP;
+    private GUI g;
 
     private Labirynt l;
 
-    public Rysowanie(Labirynt l) {
+    public Rysowanie(Labirynt l, GUI g) {
         this.l = l;
-        this.wielkoscPola = 20;
+        this.wielkoscPola = 2;
         this.wcP = this.wielkoscPola;
         this.setPreferredSize(new Dimension(100, 100));
+        this.g = g;
     }
 
     protected void paintComponent(Graphics g) {
@@ -85,7 +87,10 @@ public class Rysowanie extends JComponent implements Scrollable {
     }
 
     public Dimension getPreferredScrollableViewportSize() {
-        return new Dimension(1024, 512);
+        Dimension d = g.getFrameDim();
+        return new Dimension((d.width*27)/32, d.height);
+
+        
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {

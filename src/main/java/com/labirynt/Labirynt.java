@@ -4,6 +4,10 @@
  */
 package com.labirynt;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -23,6 +27,7 @@ public class Labirynt {
     private int[] Koniec;
     private Pole[][] Zawartosc;
     private boolean Rozwiazany;
+    private boolean Format;
 
     Labirynt(int iloscWierszy, int iloscKolumn, Pole[][] Zawartosc, int[] Poczatek, int[] Koniec) {
         this.iloscWierszy = iloscWierszy;
@@ -30,6 +35,15 @@ public class Labirynt {
         this.Zawartosc = Zawartosc;
         this.Poczatek = Poczatek;
         this.Koniec = Koniec;
+        this.Rozwiazany = false;
+    }
+    
+    Labirynt(OdczytPlikuTekstowego opt){
+        this.iloscWierszy = opt.odczytajIloscWierszy();
+        this.iloscKolumn = opt.odczytajIloscKolumn();
+        this.Zawartosc = opt.odczytajZawartoscPliku(this.iloscWierszy, this.iloscKolumn);
+        this.Poczatek = opt.odczytajWPoczatku();
+        this.Koniec = opt.odczytajWKonca();
         this.Rozwiazany = false;
     }
 
@@ -183,6 +197,8 @@ public class Labirynt {
         }
 
     }
+    
+    
 
     public void zapisTekst() {
         if (this != null) {
