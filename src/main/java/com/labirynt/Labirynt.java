@@ -46,6 +46,20 @@ public class Labirynt {
         this.Koniec = opt.odczytajWKonca();
         this.Rozwiazany = false;
     }
+    
+    Labirynt(OdczytPlikuBinarnego opb){
+        Binarny b = opb.odczytNaglowka();
+        this.iloscWierszy = b.getLines();
+        this.iloscKolumn = b.getColumns();
+        this.Zawartosc = opb.odczytZawartosci(b);
+        this.Poczatek = new int[2];
+        this.Poczatek[0] = b.getEntry_x() -1;
+        this.Poczatek[1] = b.getEntry_y() -1;
+        this.Koniec = new int[2];
+        this.Koniec[0] = b.getExit_x() -1;
+        this.Koniec[1] = b.getExit_y() -1;
+        this.Rozwiazany = false;
+    }
 
     public void printLabirynt() {
         for (int i = 0; i < this.iloscWierszy; ++i) {
@@ -72,6 +86,10 @@ public class Labirynt {
 
     public Pole getZawatosc(int x, int y) {
         return this.Zawartosc[x][y];
+    }
+    
+    public Pole[][] getZawartosc(){
+        return this.Zawartosc;
     }
 
     public void setOdwiedzony(int x, int y) {
