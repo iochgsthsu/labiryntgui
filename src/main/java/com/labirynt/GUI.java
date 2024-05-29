@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.labirynt;
 
 import java.awt.BorderLayout;
@@ -209,7 +205,8 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
 
         if (ae.getSource() == this.buttonZapiszZdj) {
             if (l != null) {
-                dl.zapiszZdjecie();
+                ZapisJakoZdjecie zjz = new ZapisJakoZdjecie(l, dl);
+                zjz.zapiszZdjecie();
             } else {
                 JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
             }
@@ -218,7 +215,8 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
 
         if (ae.getSource() == this.buttonZapiszTekst) {
             if (l != null) {
-                l.zapisTekst();
+                ZapisJakoTekst zjt = new ZapisJakoTekst(l);
+                zjt.zapisTekst();
             } else {
                 JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
             }

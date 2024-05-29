@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.labirynt;
 
 import java.awt.Color;
@@ -129,6 +125,12 @@ public class Rysowanie extends JComponent implements Scrollable, MouseListener {
         return p;
         
     }
+
+    public int getWielkoscPola() {
+        return wielkoscPola;
+    }
+    
+    
     
     
     
@@ -162,7 +164,7 @@ public class Rysowanie extends JComponent implements Scrollable, MouseListener {
         this.wielkoscPola = w;
     }
 
-    public void zapiszZdjecie() {
+    /*public void zapiszZdjecie() {
         if (l != null) {
             JFileChooser fc = new JFileChooser();
             int w = fc.showSaveDialog(null);
@@ -182,5 +184,6 @@ public class Rysowanie extends JComponent implements Scrollable, MouseListener {
             }
         }
     }
+*/
 
 }

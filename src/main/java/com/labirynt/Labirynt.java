@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.labirynt;
 
 import java.io.BufferedInputStream;
@@ -283,46 +279,5 @@ public class Labirynt {
         this.Rozwiazany = false;
     }
     
-    
-
-    public void zapisTekst() {
-        if (this != null) {
-            JFileChooser fc = new JFileChooser();
-            int w = fc.showSaveDialog(null);
-            if (w == 0) {
-
-                try {
-                    FileWriter wri = new FileWriter(fc.getSelectedFile().getAbsolutePath() + ".txt");
-                    for (int i = 0; i < this.getIloscWierszy(); i++) {
-
-                        for (int j = 0; j < this.getIloscKolumn(); j++) {
-                            Pole p = this.getZawatosc(i, j);
-                            if (p.getDane() == 'X') {
-                                wri.write("X");
-                            } else if (p.getDane() == 'P') {
-                                wri.write("P");
-
-                            } else if (p.getDane() == 'K') {
-                                wri.write("K");
-
-                            } else if (p.getSciezka()) {
-                                wri.write("*");
-
-                            } else {
-                                wri.write(" ");
-
-                            }
-
-                        }
-                        wri.write("\n");
-                    }
-                    wri.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-
-                }
-            }
-        }
-    }
 
 }
