@@ -126,7 +126,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
         cont.add(scr, "East");
 
         this.add(cont);
-        
+
         this.czekaNaK = false;
         this.czekaNaP = false;
     }
@@ -187,10 +187,16 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
                 JOptionPane.showMessageDialog(this, "Labirynt już został rozwiązany!", "Labirynt: info", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Stack st = this.l.BFS();
-                this.l.getSciezka(st);
+                if(st!=null){
+                    this.l.getSciezka(st);
                 this.dl.setLabirynt(this.l);
                 this.narysujLabirynt();
-                
+                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Brak rozwiązania danego labiryntu", "Labirynt: info", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         }
 
@@ -219,7 +225,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
             }
 
         }
-        
+
         if (ae.getSource() == this.buttonUstawP) {
             if (l != null) {
                 this.czekaNaP = true;
@@ -229,7 +235,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
             }
 
         }
-        
+
         if (ae.getSource() == this.buttonUstawK) {
             if (l != null) {
                 this.czekaNaP = false;
@@ -247,27 +253,29 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
         this.dl.revalidate();
         this.dl.repaint();
     }
-    
-    public void powiadom(Point p, int wielkosc){
-        if(this.czekaNaP == true){
-            this.czekaNaP = false;
-            int nr_wiersza = p.y/wielkosc;
-            int nr_kolumny = p.x/wielkosc;
-            l.ustawNowyPoczatek(nr_wiersza, nr_kolumny);
-            this.narysujLabirynt();
-          
-            
+
+    public void powiadom(Point p, int wielkosc) {
+        if (l != null) {
+            if (l.getIloscWierszy() * wielkosc <= p.y || l.getIloscKolumn() * wielkosc <= p.x) {
+                return;
+            }
+            if (this.czekaNaP == true) {
+                this.czekaNaP = false;
+                int nr_wiersza = p.y / wielkosc;
+                int nr_kolumny = p.x / wielkosc;
+                l.ustawNowyPoczatek(nr_wiersza, nr_kolumny);
+                this.narysujLabirynt();
+
+            } else if (this.czekaNaK == true) {
+                this.czekaNaK = false;
+                int nr_wiersza = p.y / wielkosc;
+                int nr_kolumny = p.x / wielkosc;
+                l.ustawNowyKoniec(nr_wiersza, nr_kolumny);
+                this.narysujLabirynt();
+
+            }
+
         }
-        else if(this.czekaNaK== true){
-            this.czekaNaK = false;
-            int nr_wiersza = p.y/wielkosc;
-            int nr_kolumny = p.x/wielkosc;
-            l.ustawNowyKoniec(nr_wiersza, nr_kolumny);
-            this.narysujLabirynt();
-            
-        }
-        
-        
     }
 
     public Dimension getFrameDim() {

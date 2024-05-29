@@ -173,7 +173,7 @@ public class Labirynt {
                     c = p.getY() - 1;
                 }
 
-                if (r >= 0 && c >= 0) {
+                if (r >= 0 && c >= 0 && r<=this.getIloscWierszy()-1 && c<=this.getIloscKolumn()-1) {
                     Pole p_tmp = this.getPole(r, c);
                     if (!p_tmp.getOdwiedzony()) {
                         char t = p_tmp.getDane();
@@ -192,7 +192,7 @@ public class Labirynt {
             }
         }
 
-        return s;
+        return null;
     }
 
     public void getSciezka(Stack s) {
