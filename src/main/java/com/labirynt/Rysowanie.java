@@ -8,7 +8,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,11 +24,12 @@ import javax.swing.Scrollable;
  *
  * @author adam
  */
-public class Rysowanie extends JComponent implements Scrollable {
+public class Rysowanie extends JComponent implements Scrollable, MouseListener {
 
     private int wielkoscPola;
     private int wcP;
     private GUI g;
+    private Point p;
 
     private Labirynt l;
 
@@ -35,6 +39,7 @@ public class Rysowanie extends JComponent implements Scrollable {
         this.wcP = this.wielkoscPola;
         this.setPreferredSize(new Dimension(100, 100));
         this.g = g;
+        addMouseListener(this);
     }
 
     protected void paintComponent(Graphics g) {
@@ -108,6 +113,50 @@ public class Rysowanie extends JComponent implements Scrollable {
     public boolean getScrollableTracksViewportHeight() {
         return this.getPreferredSize().height <= this.getParent().getSize().height;
     }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        
+        this.p = me.getPoint();
+        g.powiadom(this.getPoint(), this.getWielkosc());
+        
+          
+    } 
+    
+    
+    
+    public Point getPoint(){
+        return p;
+        
+    }
+    
+    
+    
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        
+    }
+    
+    
+    
+    
+    
 
     public void setWielkosc(int w) {
         this.wielkoscPola = w;

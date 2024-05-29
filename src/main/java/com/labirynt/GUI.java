@@ -7,10 +7,10 @@ package com.labirynt;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.Stack;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -53,6 +53,8 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
     private Labirynt l;
     private int[] pcz;
     private int[] kn;
+    private boolean czekaNaP;
+    private boolean czekaNaK;
 
     GUI() {
 
@@ -85,17 +87,15 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
         this.buttonZapiszBin = new JButton("Zapisz jako plik binarny");
 
         this.buttonUstawK = new JButton("Ustaw koniec");
+        this.buttonUstawK.addActionListener(this);
 
         this.buttonUstawP = new JButton("Ustaw początek");
+        this.buttonUstawP.addActionListener(this);
 
         this.labelWiel = new JLabel("Wybierz wielkość labiryntu");
         this.labelZapis = new JLabel("Wybierz metodę zapisu labiryntu");
         this.labelZnaczniki = new JLabel("Ustaw znacznik labiryntu");
 
-        /*String [] s ={ "25%", "50%", "100%", "150%", "200%", "300%"};
-      this.cbWielkosc = new JComboBox(s);
-      this.cbWielkosc.setSelectedIndex(2);
-      this.cbWielkosc.addActionListener(this);*/
         slid = new JSlider(3, 27, 15);
         slid.addChangeListener(this);
 
@@ -109,8 +109,6 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
         this.setResizable(true);
 
         przy.add(this.buttonOtwPlik);
-        //przy.add(this.buttonPrintLab);
-        //przy.add(this.buttonLabInfo);
         przy.add(this.buttonSolve);
         przy.add(this.labelZnaczniki);
         przy.add(this.buttonUstawP);
@@ -128,6 +126,9 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
         cont.add(scr, "East");
 
         this.add(cont);
+        
+        this.czekaNaK = false;
+        this.czekaNaP = false;
     }
 
     @Override
@@ -161,6 +162,8 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
 
                 if (l.getZawartosc() != null) {
                     l.setRozwiazany(false);
+                    this.czekaNaK = false;
+                    this.czekaNaP = false;
                     dl.setWielkosc(slid.getValue() * dl.getwcP());
                     this.narysujLabirynt();
                 } else {
@@ -187,6 +190,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
                 this.l.getSciezka(st);
                 this.dl.setLabirynt(this.l);
                 this.narysujLabirynt();
+                
             }
         }
 
@@ -215,6 +219,26 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
             }
 
         }
+        
+        if (ae.getSource() == this.buttonUstawP) {
+            if (l != null) {
+                this.czekaNaP = true;
+                this.czekaNaK = false;
+            } else {
+                JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+        
+        if (ae.getSource() == this.buttonUstawK) {
+            if (l != null) {
+                this.czekaNaP = false;
+                this.czekaNaK = true;
+            } else {
+                JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
 
     }
 
@@ -222,6 +246,28 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
         this.dl.setLabirynt(this.l);
         this.dl.revalidate();
         this.dl.repaint();
+    }
+    
+    public void powiadom(Point p, int wielkosc){
+        if(this.czekaNaP == true){
+            this.czekaNaP = false;
+            int nr_wiersza = p.y/wielkosc;
+            int nr_kolumny = p.x/wielkosc;
+            l.ustawNowyPoczatek(nr_wiersza, nr_kolumny);
+            this.narysujLabirynt();
+          
+            
+        }
+        else if(this.czekaNaK== true){
+            this.czekaNaK = false;
+            int nr_wiersza = p.y/wielkosc;
+            int nr_kolumny = p.x/wielkosc;
+            l.ustawNowyKoniec(nr_wiersza, nr_kolumny);
+            this.narysujLabirynt();
+            
+        }
+        
+        
     }
 
     public Dimension getFrameDim() {

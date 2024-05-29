@@ -53,11 +53,11 @@ public class Labirynt {
         this.iloscKolumn = b.getColumns();
         this.Zawartosc = opb.odczytZawartosci(b);
         this.Poczatek = new int[2];
-        this.Poczatek[0] = b.getEntry_x() -1;
-        this.Poczatek[1] = b.getEntry_y() -1;
+        this.Poczatek[0] = b.getEntry_y() -1;
+        this.Poczatek[1] = b.getEntry_x() -1;
         this.Koniec = new int[2];
-        this.Koniec[0] = b.getExit_x() -1;
-        this.Koniec[1] = b.getExit_y() -1;
+        this.Koniec[0] = b.getExit_y() -1;
+        this.Koniec[1] = b.getExit_x() -1;
         this.Rozwiazany = false;
     }
 
@@ -198,22 +198,80 @@ public class Labirynt {
     public void getSciezka(Stack s) {
         int[] pl = this.getPoczatek();
         ParaPol pp = (ParaPol) s.pop();
+        Pole obec,poprz;
 
         while (!s.isEmpty()) {
-            Pole obec = pp.getP1();
-            Pole poprz = pp.getP2();
+            obec = pp.getP1();
+            poprz = pp.getP2();
             this.jestSciezka(poprz.getX(), poprz.getY());
 
             while (poprz.getX() != obec.getX() || poprz.getY() != obec.getY()) {
-                pp = (ParaPol) s.pop();
-                poprz = pp.getP2();
+                if(!s.isEmpty()){
+                    pp = (ParaPol) s.pop();
+                    poprz = pp.getP2();
+                    
+                }
+                else
+                {
+                    break;
+                }
+              
             }
 
             obec = pp.getP1();
             this.jestSciezka(poprz.getX(), poprz.getY());
             this.jestSciezka(obec.getX(), obec.getY());
         }
+    }
+    
+    public void ustawNowyPoczatek(int w, int k){
+        wyczyscRozwiazanie();
+        Pole pp = this.getZawatosc(Poczatek[0], Poczatek[1]);
+        char c = pp.getZamiana();
+        if(c == 'N'){
+            this.setZawartosc(pp.getX(), pp.getY(), 'X');
+        }
+        else
+        {
+            this.setZawartosc(pp.getX(), pp.getY(), c);
+        }
 
+        this.Poczatek[0] = w;
+        this.Poczatek[1] = k;
+        this.Zawartosc[w][k].setZamiana(this.Zawartosc[w][k].getDane());
+        this.setZawartosc(w, k,'P');
+
+        
+    }
+    
+    public void ustawNowyKoniec(int w, int k){
+        wyczyscRozwiazanie();
+        Pole pp = this.getZawatosc(Koniec[0], Koniec[1]);
+        char c = pp.getZamiana();
+        if(c == 'N'){
+            this.setZawartosc(pp.getX(), pp.getY(), 'X');
+        }
+        else
+        {
+            this.setZawartosc(pp.getX(), pp.getY(), c);
+        }
+        
+        
+        this.Koniec[0] = w;
+        this.Koniec[1] = k;
+        this.Zawartosc[w][k].setZamiana(this.Zawartosc[w][k].getDane());
+        this.setZawartosc(w, k, 'K');
+        
+    }
+    
+    private void wyczyscRozwiazanie(){
+        for(int i = 0; i<this.getIloscWierszy(); i++){
+            for(int j = 0 ;j<this.getIloscWierszy(); j++){
+                this.Zawartosc[i][j].setSciezka(false);
+                this.Zawartosc[i][j].setOdwiedzony(false);
+            }
+        }
+        this.Rozwiazany = false;
     }
     
     
