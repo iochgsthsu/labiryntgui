@@ -161,7 +161,6 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
                 }
 
                 if (l.getZawartosc() != null) {
-                    l.setRozwiazany(false);
                     this.czekaNaK = false;
                     this.czekaNaP = false;
                     dl.setWielkosc(slid.getValue() * dl.getwcP());

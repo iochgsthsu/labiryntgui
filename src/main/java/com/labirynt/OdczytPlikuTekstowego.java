@@ -16,9 +16,9 @@ import java.util.Scanner;
  *
  * @author adam
  */
-public class OdczytPlikuTekstowego extends OdczytPliku{
-    
-    OdczytPlikuTekstowego(String sciezkaDoPliku){
+public class OdczytPlikuTekstowego extends OdczytPliku {
+
+    OdczytPlikuTekstowego(String sciezkaDoPliku) {
         super(sciezkaDoPliku);
     }
 
@@ -70,6 +70,11 @@ public class OdczytPlikuTekstowego extends OdczytPliku{
                 for (int i = 0; i < linia.length(); ++i) {
                     zawartosc[danyWiersz][i] = new Pole(danyWiersz, i);
                     zawartosc[danyWiersz][i].setDane(linia.charAt(i));
+                    if(linia.charAt(i) == '*')
+                    {
+                        zawartosc[danyWiersz][i].setSciezka();
+                    }
+
                 }
             }
 
@@ -79,6 +84,41 @@ public class OdczytPlikuTekstowego extends OdczytPliku{
         }
 
         return zawartosc;
+    }
+
+    public boolean sprawdzRozwiazanie(int iloscWierszy, int iloscKolumn) {
+
+        int danyWiersz = 0;
+        boolean r = false;
+
+        try {
+            File plik = new File(this.sciezkaDoPliku);
+
+            Scanner skaner;
+            for (skaner = new Scanner(plik); skaner.hasNextLine(); ++danyWiersz) {
+                String linia = skaner.nextLine();
+
+                for (int i = 0; i < linia.length(); ++i) {
+                    if (linia.charAt(i) == '*') {
+                        r = true;
+                        break;
+
+                    }
+
+                    if (r == true) {
+                        break;
+                    }
+
+                }
+            }
+
+            skaner.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Nie znaleziono pliku!");
+        }
+
+        return r;
+
     }
 
     public int[] odczytajWPoczatku() {
@@ -134,6 +174,5 @@ public class OdczytPlikuTekstowego extends OdczytPliku{
 
         return k;
     }
-    
 
 }

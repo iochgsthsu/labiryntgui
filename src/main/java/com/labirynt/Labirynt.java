@@ -44,7 +44,8 @@ public class Labirynt {
         this.Zawartosc = opt.odczytajZawartoscPliku(this.iloscWierszy, this.iloscKolumn);
         this.Poczatek = opt.odczytajWPoczatku();
         this.Koniec = opt.odczytajWKonca();
-        this.Rozwiazany = false;
+        this.Rozwiazany = opt.sprawdzRozwiazanie(iloscWierszy, iloscKolumn);
+      
     }
     
     Labirynt(OdczytPlikuBinarnego opb){
@@ -220,8 +221,9 @@ public class Labirynt {
 
             obec = pp.getP1();
             this.jestSciezka(poprz.getX(), poprz.getY());
-            this.jestSciezka(obec.getX(), obec.getY());
+            //this.jestSciezka(obec.getX(), obec.getY());
         }
+        
     }
     
     public void ustawNowyPoczatek(int w, int k){
@@ -238,7 +240,10 @@ public class Labirynt {
 
         this.Poczatek[0] = w;
         this.Poczatek[1] = k;
+       
         this.Zawartosc[w][k].setZamiana(this.Zawartosc[w][k].getDane());
+ 
+        
         this.setZawartosc(w, k,'P');
 
         
@@ -267,6 +272,10 @@ public class Labirynt {
     private void wyczyscRozwiazanie(){
         for(int i = 0; i<this.getIloscWierszy(); i++){
             for(int j = 0 ;j<this.getIloscWierszy(); j++){
+                if(Zawartosc[i][j].getDane() == '*')
+                {
+                    Zawartosc[i][j].setDane(' ');
+                }
                 this.Zawartosc[i][j].setSciezka(false);
                 this.Zawartosc[i][j].setOdwiedzony(false);
             }
