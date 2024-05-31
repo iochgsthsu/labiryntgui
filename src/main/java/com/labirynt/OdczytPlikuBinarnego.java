@@ -36,6 +36,7 @@ public class OdczytPlikuBinarnego extends OdczytPliku {
                 b.setSeparator(dis.readByte());
                 b.setWall(dis.readByte());
                 b.setPath(dis.readByte());
+                //b.printInfo();
                 dis.close();
 
             } catch (java.io.EOFException eof) {
@@ -66,6 +67,13 @@ public class OdczytPlikuBinarnego extends OdczytPliku {
                     sep = dis.readByte();
                     val = dis.readByte();
                     count = dis.readByte();
+                    /*
+                    System.out.print((char)sep);
+                    System.out.print((char)val);
+                    System.out.print(Byte.toUnsignedInt(count));
+                    System.out.print(" ");
+*/
+                    
                     for (int j = 0; j < Byte.toUnsignedInt(count) + 1; j++) {
 
                         if (sep != b.getSeparator()) {

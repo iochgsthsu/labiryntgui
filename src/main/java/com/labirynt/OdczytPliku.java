@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -26,8 +28,8 @@ public class OdczytPliku {
             DataInputStream dis = new DataInputStream(new BufferedInputStream(new FileInputStream(new File(this.sciezkaDoPliku))));
             while (true) {
                 try {
-                    int fileid = dis.readInt();
-                    if (fileid == 1128419922) { // jezeli 4 pierwsze bajty danego pliku to fileid pliku typu bin
+                    int fileid = Integer.reverseBytes(dis.readInt());
+                    if (fileid == 0x52524243) {
                         b = true;
                     }
                     break;

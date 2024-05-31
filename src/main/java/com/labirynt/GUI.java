@@ -81,6 +81,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
         this.buttonZapiszZdj.addActionListener(this);
 
         this.buttonZapiszBin = new JButton("Zapisz jako plik binarny");
+        this.buttonZapiszBin.addActionListener(this);
 
         this.buttonUstawK = new JButton("Ustaw koniec");
         this.buttonUstawK.addActionListener(this);
@@ -217,6 +218,16 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
             if (l != null) {
                 ZapisJakoTekst zjt = new ZapisJakoTekst(l);
                 zjt.zapisTekst();
+            } else {
+                JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+        
+        if (ae.getSource() == this.buttonZapiszBin) {
+            if (l != null) {
+                ZapisJakoBinarny zjb = new ZapisJakoBinarny(l);
+                zjb.zapisBin();
             } else {
                 JOptionPane.showMessageDialog(this, "Nie wybrano labiryntu!", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
             }

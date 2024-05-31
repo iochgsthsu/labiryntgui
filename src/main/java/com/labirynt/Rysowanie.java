@@ -38,6 +38,7 @@ public class Rysowanie extends JComponent implements Scrollable, MouseListener {
         addMouseListener(this);
     }
 
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -70,6 +71,7 @@ public class Rysowanie extends JComponent implements Scrollable, MouseListener {
 
     }
 
+    @Override
     public Dimension getPreferredSize() {
         return this.l != null ? new Dimension(this.l.getIloscWierszy() * this.wielkoscPola, this.l.getIloscKolumn() * this.wielkoscPola) : new Dimension(100, 100);
     }
@@ -87,103 +89,72 @@ public class Rysowanie extends JComponent implements Scrollable, MouseListener {
         return this.wcP;
     }
 
+    @Override
     public Dimension getPreferredScrollableViewportSize() {
         Dimension d = g.getFrameDim();
-        return new Dimension((d.width*27)/32, d.height);
+        return new Dimension((d.width * 27) / 32, d.height);
 
-        
     }
-
+    
+    @Override
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
         return 128;
     }
-
+    
+    @Override
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         return 128;
     }
-
+    
+    @Override
     public boolean getScrollableTracksViewportWidth() {
         return this.getPreferredSize().width <= this.getParent().getSize().width;
     }
-
+    
+    @Override
     public boolean getScrollableTracksViewportHeight() {
         return this.getPreferredSize().height <= this.getParent().getSize().height;
     }
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        
+
         this.p = me.getPoint();
         g.powiadom(this.getPoint(), this.getWielkosc());
-        
-          
-    } 
-    
-    
-    
-    public Point getPoint(){
+
+    }
+
+    public Point getPoint() {
         return p;
-        
+
     }
 
     public int getWielkoscPola() {
         return wielkoscPola;
     }
-    
-    
-    
-    
-    
 
     @Override
     public void mousePressed(MouseEvent me) {
-        
+
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        
+
     }
 
     @Override
     public void mouseEntered(MouseEvent me) {
-        
+
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-        
+
     }
-    
-    
-    
-    
-    
 
     public void setWielkosc(int w) {
         this.wielkoscPola = w;
     }
-
-    /*public void zapiszZdjecie() {
-        if (l != null) {
-            JFileChooser fc = new JFileChooser();
-            int w = fc.showSaveDialog(null);
-            if (w == 0) {
-
-                BufferedImage bi = new BufferedImage(this.wielkoscPola * l.getIloscWierszy(), this.wielkoscPola * l.getIloscKolumn(), BufferedImage.TYPE_INT_RGB);
-                Graphics2D g2d = bi.createGraphics();
-                this.paintAll(g2d);
-                try {
-                    if (ImageIO.write(bi, "png", new File(fc.getSelectedFile().getAbsolutePath() + ".png"))) {
-                    }
-
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-
-                }
-            }
-        }
-    }
-*/
 
 }

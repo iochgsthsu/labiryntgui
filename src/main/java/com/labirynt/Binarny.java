@@ -24,6 +24,11 @@ public class Binarny {
     private byte path;
     private byte [] solveid;
     private byte [] steps;
+    
+
+    
+    
+    
     Binarny(){
         solveid = new byte[4];
         res = new byte[12];
@@ -178,9 +183,9 @@ public class Binarny {
         System.out.println("exit_y: " + this.exit_y);
         System.out.println("counter: " +this.counter);
         System.out.println("sollution_off: " +this.sollution_off);
-        System.out.println("separator: " +(char)this.separator);
-        System.out.println("wall: " + (char)this.wall);
-        System.out.println("path: " + (char)this.path);
+        System.out.println("separator: " +this.separator);
+        System.out.println("wall: " + this.wall);
+        System.out.println("path: " + this.path);
         
         
         

@@ -1,4 +1,4 @@
-package com.labirynt;
+    package com.labirynt;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -121,6 +121,10 @@ public class Labirynt {
 
     public int[] getPoczatek() {
         return this.Poczatek;
+    }
+    
+    public int[] getKoniec() {
+        return this.Koniec;
     }
 
     public Pole getPole(int x, int y) {
