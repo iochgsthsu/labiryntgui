@@ -1,4 +1,4 @@
-    package com.labirynt;
+package com.labirynt;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -33,28 +33,28 @@ public class Labirynt {
         this.Koniec = Koniec;
         this.Rozwiazany = false;
     }
-    
-    Labirynt(OdczytPlikuTekstowego opt){
+
+    Labirynt(OdczytPlikuTekstowego opt) {
         this.iloscWierszy = opt.odczytajIloscWierszy();
         this.iloscKolumn = opt.odczytajIloscKolumn();
         this.Zawartosc = opt.odczytajZawartoscPliku(this.iloscWierszy, this.iloscKolumn);
         this.Poczatek = opt.odczytajWPoczatku();
         this.Koniec = opt.odczytajWKonca();
         this.Rozwiazany = opt.sprawdzRozwiazanie(iloscWierszy, iloscKolumn);
-      
+
     }
-    
-    Labirynt(OdczytPlikuBinarnego opb){
+
+    Labirynt(OdczytPlikuBinarnego opb) {
         Binarny b = opb.odczytNaglowka();
         this.iloscWierszy = b.getLines();
         this.iloscKolumn = b.getColumns();
         this.Zawartosc = opb.odczytZawartosci(b);
         this.Poczatek = new int[2];
-        this.Poczatek[0] = b.getEntry_y() -1;
-        this.Poczatek[1] = b.getEntry_x() -1;
+        this.Poczatek[0] = b.getEntry_y() - 1;
+        this.Poczatek[1] = b.getEntry_x() - 1;
         this.Koniec = new int[2];
-        this.Koniec[0] = b.getExit_y() -1;
-        this.Koniec[1] = b.getExit_x() -1;
+        this.Koniec[0] = b.getExit_y() - 1;
+        this.Koniec[1] = b.getExit_x() - 1;
         this.Rozwiazany = false;
     }
 
@@ -84,8 +84,8 @@ public class Labirynt {
     public Pole getZawatosc(int x, int y) {
         return this.Zawartosc[x][y];
     }
-    
-    public Pole[][] getZawartosc(){
+
+    public Pole[][] getZawartosc() {
         return this.Zawartosc;
     }
 
@@ -122,7 +122,7 @@ public class Labirynt {
     public int[] getPoczatek() {
         return this.Poczatek;
     }
-    
+
     public int[] getKoniec() {
         return this.Koniec;
     }
@@ -174,7 +174,7 @@ public class Labirynt {
                     c = p.getY() - 1;
                 }
 
-                if (r >= 0 && c >= 0 && r<=this.getIloscWierszy()-1 && c<=this.getIloscKolumn()-1) {
+                if (r >= 0 && c >= 0 && r <= this.getIloscWierszy() - 1 && c <= this.getIloscKolumn() - 1) {
                     Pole p_tmp = this.getPole(r, c);
                     if (!p_tmp.getOdwiedzony()) {
                         char t = p_tmp.getDane();
@@ -196,78 +196,107 @@ public class Labirynt {
         return null;
     }
 
-    public void getSciezka(Stack s) {
+    public String getSciezka(Stack s) {
         int[] pl = this.getPoczatek();
+        int dx, dy;
+        String kroki = "";
+        char krok = 'X';
         ParaPol pp = (ParaPol) s.pop();
-        Pole obec,poprz;
+        Pole obec = pp.getP1(), poprz = pp.getP2();
 
         while (!s.isEmpty()) {
             obec = pp.getP1();
             poprz = pp.getP2();
+            dx = obec.getX() - poprz.getX();
+            dy = obec.getY() - poprz.getY();
+            if (dx == 1) {
+                krok = 'G';
+            } else if (dx == -1) {
+                krok = 'D';
+            } else if (dy == 1) {
+                krok = 'L';
+            } else if (dy == -1) {
+                krok = 'P';
+            }
+            kroki += krok;
             this.jestSciezka(poprz.getX(), poprz.getY());
 
             while (poprz.getX() != obec.getX() || poprz.getY() != obec.getY()) {
-                if(!s.isEmpty()){
+                if (!s.isEmpty()) {
                     pp = (ParaPol) s.pop();
                     poprz = pp.getP2();
-                    
-                }
-                else
-                {
+
+                } else {
                     break;
                 }
-              
+
             }
 
             obec = pp.getP1();
-            this.jestSciezka(poprz.getX(), poprz.getY());
-            //this.jestSciezka(obec.getX(), obec.getY());
+            if (!s.isEmpty()) {
+                this.jestSciezka(poprz.getX(), poprz.getY());
+                this.jestSciezka(obec.getX(), obec.getY());
+            }
+
+        }
+
+        dx = obec.getX() - poprz.getX();
+        dy = obec.getY() - poprz.getY();
+        if (obec.getX() == this.Poczatek[0] && obec.getY() == this.Poczatek[1] && poprz.getSciezka()) {
+            if (dx == 1) {
+                krok = 'G';
+            } else if (dx == -1) {
+                krok = 'D';
+            } else if (dy == 1) {
+                krok = 'L';
+            } else if (dy == -1) {
+                krok = 'P';
+            }
+            kroki += krok;
         }
         
+
+        StringBuffer sb = new StringBuffer(kroki);
+        sb.reverse();
+        return sb.toString();
+
     }
-    
-    public boolean ustawNowyPoczatek(int w, int k){
+
+    public boolean ustawNowyPoczatek(int w, int k) {
         Pole p = this.getZawatosc(w, k);
-        if(p.getDane() == 'X' || p.getDane() == 'K'){
+        if (p.getDane() == 'X' || p.getDane() == 'K') {
             return false;
-        }
-        else
-        {
+        } else {
             wyczyscRozwiazanie();
             this.setZawartosc(Poczatek[0], Poczatek[1], ' ');
             this.Poczatek[0] = w;
             this.Poczatek[1] = k;
-            this.setZawartosc(w, k,'P');
+            this.setZawartosc(w, k, 'P');
             return true;
         }
 
-        
     }
-    
-    public boolean ustawNowyKoniec(int w, int k){
+
+    public boolean ustawNowyKoniec(int w, int k) {
         Pole p = this.getZawatosc(w, k);
-        if(p.getDane() == 'X' || p.getDane() == 'P'){
+        if (p.getDane() == 'X' || p.getDane() == 'P') {
             return false;
-            
-        }
-        else
-        {
+
+        } else {
             wyczyscRozwiazanie();
             this.setZawartosc(Koniec[0], Koniec[1], ' ');
             this.Koniec[0] = w;
             this.Koniec[1] = k;
-            this.setZawartosc(w, k,'K');
+            this.setZawartosc(w, k, 'K');
             return true;
         }
-       
-        
+
     }
-    
-    private void wyczyscRozwiazanie(){
-        for(int i = 0; i<this.getIloscWierszy(); i++){
-            for(int j = 0 ;j<this.getIloscWierszy(); j++){
-                if(Zawartosc[i][j].getDane() == '*')
-                {
+
+    private void wyczyscRozwiazanie() {
+        for (int i = 0; i < this.getIloscWierszy(); i++) {
+            for (int j = 0; j < this.getIloscWierszy(); j++) {
+                if (Zawartosc[i][j].getDane() == '*') {
                     Zawartosc[i][j].setDane(' ');
                 }
                 this.Zawartosc[i][j].setSciezka(false);
@@ -276,6 +305,5 @@ public class Labirynt {
         }
         this.Rozwiazany = false;
     }
-    
 
 }

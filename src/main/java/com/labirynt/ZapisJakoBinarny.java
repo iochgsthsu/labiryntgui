@@ -152,6 +152,7 @@ public class ZapisJakoBinarny extends ZapisPliku {
                     if(l.czyRozwiazany() == true){
                         
                         
+                        
                     }
                    
                     dos.close();
