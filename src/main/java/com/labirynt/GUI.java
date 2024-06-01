@@ -271,14 +271,20 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
                 this.czekaNaP = false;
                 int nr_wiersza = p.y / wielkosc;
                 int nr_kolumny = p.x / wielkosc;
-                l.ustawNowyPoczatek(nr_wiersza, nr_kolumny);
+                boolean u = l.ustawNowyPoczatek(nr_wiersza, nr_kolumny);
+                if(u == false){
+                    JOptionPane.showMessageDialog(this, "Wybrano nieprawidłowe pole", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
+                }
                 this.narysujLabirynt();
 
             } else if (this.czekaNaK == true) {
                 this.czekaNaK = false;
                 int nr_wiersza = p.y / wielkosc;
                 int nr_kolumny = p.x / wielkosc;
-                l.ustawNowyKoniec(nr_wiersza, nr_kolumny);
+                boolean u = l.ustawNowyKoniec(nr_wiersza, nr_kolumny);
+                if(u == false){
+                    JOptionPane.showMessageDialog(this, "Wybrano nieprawidłowe pole", "Labirynt: błąd", JOptionPane.ERROR_MESSAGE);
+                }
                 this.narysujLabirynt();
 
             }

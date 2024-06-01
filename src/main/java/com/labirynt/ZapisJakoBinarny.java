@@ -149,7 +149,11 @@ public class ZapisJakoBinarny extends ZapisPliku {
 
                     }
                     dos.write(ByteBuffer.allocate(4).putInt(Integer.reverseBytes(0x52524243)).array());
-
+                    if(l.czyRozwiazany() == true){
+                        
+                        
+                    }
+                   
                     dos.close();
 
                 } catch (IOException ex) {
@@ -159,5 +163,6 @@ public class ZapisJakoBinarny extends ZapisPliku {
             }
         }
     }
+    
 
 }

@@ -226,46 +226,40 @@ public class Labirynt {
         
     }
     
-    public void ustawNowyPoczatek(int w, int k){
-        wyczyscRozwiazanie();
-        Pole pp = this.getZawatosc(Poczatek[0], Poczatek[1]);
-        char c = pp.getZamiana();
-        if(c == 'N'){
-            this.setZawartosc(pp.getX(), pp.getY(), 'X');
+    public boolean ustawNowyPoczatek(int w, int k){
+        Pole p = this.getZawatosc(w, k);
+        if(p.getDane() == 'X' || p.getDane() == 'K'){
+            return false;
         }
         else
         {
-            this.setZawartosc(pp.getX(), pp.getY(), c);
+            wyczyscRozwiazanie();
+            this.setZawartosc(Poczatek[0], Poczatek[1], ' ');
+            this.Poczatek[0] = w;
+            this.Poczatek[1] = k;
+            this.setZawartosc(w, k,'P');
+            return true;
         }
-
-        this.Poczatek[0] = w;
-        this.Poczatek[1] = k;
-       
-        this.Zawartosc[w][k].setZamiana(this.Zawartosc[w][k].getDane());
- 
-        
-        this.setZawartosc(w, k,'P');
 
         
     }
     
-    public void ustawNowyKoniec(int w, int k){
-        wyczyscRozwiazanie();
-        Pole pp = this.getZawatosc(Koniec[0], Koniec[1]);
-        char c = pp.getZamiana();
-        if(c == 'N'){
-            this.setZawartosc(pp.getX(), pp.getY(), 'X');
+    public boolean ustawNowyKoniec(int w, int k){
+        Pole p = this.getZawatosc(w, k);
+        if(p.getDane() == 'X' || p.getDane() == 'P'){
+            return false;
+            
         }
         else
         {
-            this.setZawartosc(pp.getX(), pp.getY(), c);
+            wyczyscRozwiazanie();
+            this.setZawartosc(Koniec[0], Koniec[1], ' ');
+            this.Koniec[0] = w;
+            this.Koniec[1] = k;
+            this.setZawartosc(w, k,'K');
+            return true;
         }
-        
-        
-        this.Koniec[0] = w;
-        this.Koniec[1] = k;
-        this.Zawartosc[w][k].setZamiana(this.Zawartosc[w][k].getDane());
-        this.setZawartosc(w, k, 'K');
+       
         
     }
     

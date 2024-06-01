@@ -10,7 +10,6 @@ public class Pole {
    private int wspolrzednaY;
    private boolean Odwiedzony;
    private boolean jestSciezka;
-   private char zamiana = 'N';
 
    Pole(int wspX, int wspY) {
       this.wspolrzednaX = wspX;
@@ -58,15 +57,6 @@ public class Pole {
       public void setOdwiedzony(boolean b) {
       this.Odwiedzony = b;
    }
-
-    public char getZamiana() {
-        return zamiana;
-    }
-
-    public void setZamiana(char zamiana) {
-        this.zamiana = zamiana;
-    }
-      
    
 
    public boolean getSciezka() {
