@@ -22,17 +22,14 @@ public class Binarny {
     private byte separator;
     private byte wall;
     private byte path;
-    private byte [] solveid;
-    private byte [] steps;
+    private short steps;
     
 
     
     
     
     Binarny(){
-        solveid = new byte[4];
         res = new byte[12];
-        steps = new byte[2];
         
     }
 
@@ -92,11 +89,8 @@ public class Binarny {
         this.path = path;
     }
 
-    public void setSolveid(byte[] solveid) {
-        this.solveid = solveid;
-    }
 
-    public void setSteps(byte[] steps) {
+    public void setSteps(short steps) {
         this.steps = steps;
     }
     
@@ -158,11 +152,8 @@ public class Binarny {
         return path;
     }
 
-    public byte[] getSolveid() {
-        return solveid;
-    }
 
-    public byte[] getSteps() {
+    public short getSteps() {
         return steps;
     }
 

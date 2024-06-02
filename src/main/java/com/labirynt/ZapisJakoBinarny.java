@@ -30,12 +30,12 @@ public class ZapisJakoBinarny extends ZapisPliku {
                 if (c == 'P' || c == 'K') {
                     c = ' ';
                 }
-                
-                if (c != t && j!= 0) {
+
+                if (c != t && j != 0) {
                     count++;
                     akc = 0;
 
-                } else if (akc  == 256) {
+                } else if (akc == 256) {
                     count++;
                     akc = 0;
                 }
@@ -43,7 +43,7 @@ public class ZapisJakoBinarny extends ZapisPliku {
                 t = c;
 
             }
-            akc= 0;
+            akc = 0;
             count++;
         }
 
@@ -53,6 +53,29 @@ public class ZapisJakoBinarny extends ZapisPliku {
 
     public int obliczSolOffset() {
         return 40 + (3 * this.obliczCounter());
+    }
+
+    public int obliczKroki(String s) {
+        char c = 'a';
+        char t = 'b';
+        int il = 0;
+        int akc = 0;
+        for (int i = 0; i < s.length(); i++) {
+            c = s.charAt(i);
+            if (c != t && i != 0) {
+                il++;
+                akc = 0;
+            } else if (akc == 256) {
+                il++;
+                akc = 0;
+            }
+
+            akc++;
+            t = c;
+        }
+        il++;
+        return il;
+
     }
 
     public void zapisBin() {
@@ -103,6 +126,10 @@ public class ZapisJakoBinarny extends ZapisPliku {
                             if (c == 'P' || c == 'K') {
                                 c = ' ';
                             }
+
+                            //0x23 - '#'
+                            //0x20 - ' '
+                            //0x58 - 'X'
                             if (akc == 256) {
                                 if (c == ' ') {
                                     dos.write(0x23);
@@ -149,12 +176,88 @@ public class ZapisJakoBinarny extends ZapisPliku {
 
                     }
                     dos.write(ByteBuffer.allocate(4).putInt(Integer.reverseBytes(0x52524243)).array());
-                    if(l.czyRozwiazany() == true){
-                        
-                        
-                        
+                    if (l.czyRozwiazany() == true) {
+                        dos.write(ByteBuffer.allocate(2).putShort(Short.reverseBytes((short) this.obliczKroki(l.getKroki()))).array());
+                        count = 0;
+                        akc = 0;
+                        c = 'a';
+                        t = 'a';
+                        String kr = l.getKroki();
+                        for (int i = 0; i < kr.length(); i++) {
+                            c = kr.charAt(i);
+                            //0x4E - 'N'
+                            //0x45 - 'E'
+                            //0x53 - 'S'
+                            //0x57 - 'W'
+
+                            if (akc == 256) {
+                                if (c == 'G') {
+                                    dos.write(0x4E);
+                                    dos.write(akc - 1);
+
+                                } else if (c == 'D') {
+                                    dos.write(0x53);
+                                    dos.write(akc - 1);
+
+                                } else if (c == 'P') {
+                                    dos.write(0x45);
+                                    dos.write(akc - 1);
+
+                                } else if (c == 'L') {
+                                    dos.write(0x57);
+                                    dos.write(akc - 1);
+
+                                }
+                                akc = 0;
+                            } else if (i != 0 && t != c) {
+                                if (t == 'G') {
+                                    dos.write(0x4E);
+                                    dos.write(akc - 1);
+
+                                } else if (t == 'D') {
+                                    dos.write(0x53);
+                                    dos.write(akc - 1);
+
+                                } else if (t == 'P') {
+                                    dos.write(0x45);
+                                    dos.write(akc - 1);
+
+                                } else if (t == 'L') {
+                                    dos.write(0x57);
+                                    dos.write(akc - 1);
+
+                                }
+                                akc = 0;
+
+                            }
+                            akc++;
+
+                            t = c;
+
+                        }
+
+                        if (akc != 0) {
+                            if (c == 'G') {
+                                dos.write(0x4E);
+                                dos.write(akc - 1);
+
+                            } else if (c == 'D') {
+                                dos.write(0x53);
+                                dos.write(akc - 1);
+
+                            } else if (c == 'P') {
+                                dos.write(0x45);
+                                dos.write(akc - 1);
+
+                            } else if (c == 'L') {
+                                dos.write(0x57);
+                                dos.write(akc - 1);
+
+                            }
+                        }
+
                     }
-                   
+                    dos.write(ByteBuffer.allocate(4).putInt(Integer.reverseBytes(0x52524243)).array());
                     dos.close();
 
                 } catch (IOException ex) {
@@ -164,6 +267,5 @@ public class ZapisJakoBinarny extends ZapisPliku {
             }
         }
     }
-    
 
 }

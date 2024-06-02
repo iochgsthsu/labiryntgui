@@ -24,6 +24,7 @@ public class Labirynt {
     private Pole[][] Zawartosc;
     private boolean Rozwiazany;
     private boolean Format;
+    private String kroki = "";
 
     Labirynt(int iloscWierszy, int iloscKolumn, Pole[][] Zawartosc, int[] Poczatek, int[] Koniec) {
         this.iloscWierszy = iloscWierszy;
@@ -55,7 +56,11 @@ public class Labirynt {
         this.Koniec = new int[2];
         this.Koniec[0] = b.getExit_y() - 1;
         this.Koniec[1] = b.getExit_x() - 1;
-        this.Rozwiazany = false;
+        if (b.getSollution_off() != 0) {
+            this.Rozwiazany = true;
+        } else {
+            this.Rozwiazany = false;
+        }
     }
 
     public void printLabirynt() {
@@ -137,6 +142,65 @@ public class Labirynt {
 
     public boolean czyRozwiazany() {
         return this.Rozwiazany;
+    }
+
+    public String krokiRozwiazania() {
+        String kro = "";
+        if (this.Rozwiazany == true) {
+
+            int row = 0, col = 0;
+            int x = this.Poczatek[0];
+            int y = this.Poczatek[1];
+            Pole p = this.getPole(x, y);
+            char c = p.getDane();
+            while (c != 'K') {
+                p = this.getPole(x, y);
+                c = p.getDane();
+                for (int i = 0; i < 4; i++) {
+                    if (i == 0) {
+                        row = x - 1;
+                        col = y;
+
+                    } else if (i == 1) {
+                        row = x;
+                        col = y + 1;
+
+                    } else if (i == 2) {
+                        row = x + 1;
+                        col = y;
+
+                    } else if (i == 3) {
+                        row = x;
+                        col = y - 1;
+                    }
+                    if (row >= 0 && col >= 0 && row <= this.getIloscWierszy() - 1 && col <= this.getIloscKolumn() - 1) {
+                        Pole ps = this.getPole(row, col);
+                        if (ps.getSciezka() == true && ps.getOdwiedzony() == false) {
+                            if (i == 0) {
+                                kro += "G";
+
+                            } else if (i == 1) {
+                                kro += 'P';
+
+                            } else if (i == 2) {
+                                kro += 'D';
+
+                            } else if (i == 3) {
+                               kro += 'L';
+                            }
+                            x = row;
+                            y = col;
+                            this.Zawartosc[row][col].setOdwiedzony(true);
+                            break;
+                            
+                        }
+                    }
+
+                }
+
+            }
+        }
+        return kro;
     }
 
     public Stack BFS() {
@@ -254,7 +318,6 @@ public class Labirynt {
             }
             kroki += krok;
         }
-        
 
         StringBuffer sb = new StringBuffer(kroki);
         sb.reverse();
@@ -303,7 +366,16 @@ public class Labirynt {
                 this.Zawartosc[i][j].setOdwiedzony(false);
             }
         }
+        this.kroki = "";
         this.Rozwiazany = false;
+    }
+
+    public void setKroki(String s) {
+        this.kroki = s;
+    }
+
+    public String getKroki() {
+        return this.kroki;
     }
 
 }

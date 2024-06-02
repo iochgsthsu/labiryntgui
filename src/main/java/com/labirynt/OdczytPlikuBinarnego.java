@@ -67,13 +67,7 @@ public class OdczytPlikuBinarnego extends OdczytPliku {
                     sep = dis.readByte();
                     val = dis.readByte();
                     count = dis.readByte();
-                    /*
-                    System.out.print((char)sep);
-                    System.out.print((char)val);
-                    System.out.print(Byte.toUnsignedInt(count));
-                    System.out.print(" ");
-*/
-                    
+
                     for (int j = 0; j < Byte.toUnsignedInt(count) + 1; j++) {
 
                         if (sep != b.getSeparator()) {
@@ -110,12 +104,61 @@ public class OdczytPlikuBinarnego extends OdczytPliku {
                     }
 
                 }
+                if (b.getSollution_off() != 0) {
+                    dis.readNBytes(4);
+                    b.setSteps(Short.reverseBytes(dis.readShort()));
+                    byte dir;
+                    byte cou;
+                    int pw = b.getEntry_y() - 1;
+                    int pk = b.getEntry_x() - 1;
+                    z[pw][pk].setSciezka();
+                    for (int i = 0; i < b.getSteps(); i++) {
+                        dir = dis.readByte();
+                        cou = dis.readByte();
+                        //0x4E - 'N'
+                        //0x45 - 'E'
+                        //0x53 - 'S'
+                        //0x57 - 'W'
+
+                        if (dir == 0x4E) {
+                            for(int j = 0; j<cou+1; j++){
+                                pw--;
+                                z[pw][pk].setSciezka();
+                                
+                            }
+                            
+                            
+                        }else if(dir == 0x45){
+                            for(int j = 0; j<cou+1; j++){
+                                pk++;
+                                z[pw][pk].setSciezka();
+                                
+                            }
+                            
+                        }else if(dir == 0x53){
+                            for(int j = 0; j<cou+1; j++){
+                                pw++;
+                                z[pw][pk].setSciezka();
+                                
+                            }
+                            
+                        }else if(dir == 0x57){
+                            for(int j = 0; j<cou+1; j++){
+                                pk--;
+                                z[pw][pk].setSciezka();
+                                
+                            }
+                            
+                        }
+                    }
+
+                }
 
                 dis.close();
             } catch (java.io.EOFException eof) {
 
             }
-                
+
         } catch (IOException ex) {
 
         }

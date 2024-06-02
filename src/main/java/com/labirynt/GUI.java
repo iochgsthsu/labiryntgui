@@ -38,7 +38,6 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
     private JLabel labelWiel;
     private JLabel labelZapis;
     private JLabel labelZnaczniki;
-    private String krokiRozwiazania;
     private OdczytPliku op;
     private Rysowanie dl;
     private JScrollPane sp;
@@ -166,6 +165,10 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
                 } else {
                     JOptionPane.showMessageDialog(this, "Błąd wczytywania pliku, prawdopodobnie uszkodzony", "Labirynt: info", JOptionPane.ERROR_MESSAGE);
                 }
+                if(l.czyRozwiazany()== true && l.getKroki() == ""){
+                    l.setKroki(l.krokiRozwiazania());
+                }
+                
             }
         }
 
@@ -185,8 +188,8 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
             } else {
                 Stack st = this.l.BFS();
                 if(st!=null){
-                    this.krokiRozwiazania = this.l.getSciezka(st);
-                    //System.out.println(this.krokiRozwiazania);
+                    l.setKroki(this.l.getSciezka(st));
+                    
                 this.dl.setLabirynt(this.l);
                 this.narysujLabirynt();
                 

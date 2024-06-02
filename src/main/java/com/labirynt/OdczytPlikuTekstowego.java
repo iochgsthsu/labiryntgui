@@ -66,7 +66,7 @@ public class OdczytPlikuTekstowego extends OdczytPliku {
                 for (int i = 0; i < linia.length(); ++i) {
                     zawartosc[danyWiersz][i] = new Pole(danyWiersz, i);
                     zawartosc[danyWiersz][i].setDane(linia.charAt(i));
-                    if(linia.charAt(i) == '*')
+                    if(linia.charAt(i) == '*' || linia.charAt(i) == 'P' || linia.charAt(i) == 'K')
                     {
                         zawartosc[danyWiersz][i].setSciezka();
                     }
