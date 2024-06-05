@@ -6,7 +6,9 @@ Program posiada graficzny interfejs użytkownika wykonany przy użyciu bibliotek
 
 ## Funkcjonalność:
 
-- Wczytywanie plików labiryntu w formacie tekstowych lub binarnych wraz z ewentualnym rozwiązaniem,
+- Wczytywanie plików labiryntu w formacie tekstowym lub binarnym wraz z ewentualnym rozwiązaniem,
+
+- rysowanie labiryntu oraz umożliwienie zmiany rejonu wyświetlania i wielkości samego wyniku rysowania,
 
 - ustawienie nowego znacznika początku lub końca labiryntu,
 
