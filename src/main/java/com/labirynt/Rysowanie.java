@@ -73,7 +73,7 @@ public class Rysowanie extends JComponent implements Scrollable, MouseListener {
 
     @Override
     public Dimension getPreferredSize() {
-        return this.l != null ? new Dimension(this.l.getIloscWierszy() * this.wielkoscPola, this.l.getIloscKolumn() * this.wielkoscPola) : new Dimension(100, 100);
+        return this.l != null ? new Dimension(this.l.getIloscKolumn() * this.wielkoscPola, this.l.getIloscWierszy() * this.wielkoscPola) : new Dimension(100, 100);
     }
 
     public void setLabirynt(Labirynt l) {

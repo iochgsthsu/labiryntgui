@@ -415,7 +415,7 @@ public class Labirynt {
 
     private void wyczyscRozwiazanie() {
         for (int i = 0; i < this.getIloscWierszy(); i++) {
-            for (int j = 0; j < this.getIloscWierszy(); j++) {
+            for (int j = 0; j < this.getIloscKolumn(); j++) {
                 if (Zawartosc[i][j].getDane() == '*') {
                     Zawartosc[i][j].setDane(' ');
                 }
