@@ -16,7 +16,7 @@ import javax.swing.JFileChooser;
  * @author adam
  */
 public class Labirynt {
-
+    private static Labirynt ins = null;
     private int iloscWierszy;
     private int iloscKolumn;
     private int[] Poczatek;
@@ -26,7 +26,7 @@ public class Labirynt {
     private boolean Format;
     private String kroki = "";
 
-    Labirynt(int iloscWierszy, int iloscKolumn, Pole[][] Zawartosc, int[] Poczatek, int[] Koniec) {
+    private Labirynt(int iloscWierszy, int iloscKolumn, Pole[][] Zawartosc, int[] Poczatek, int[] Koniec) {
         this.iloscWierszy = iloscWierszy;
         this.iloscKolumn = iloscKolumn;
         this.Zawartosc = Zawartosc;
@@ -35,7 +35,7 @@ public class Labirynt {
         this.Rozwiazany = false;
     }
 
-    Labirynt(OdczytPlikuTekstowego opt) {
+    private Labirynt(OdczytPlikuTekstowego opt) {
         this.iloscWierszy = opt.odczytajIloscWierszy();
         this.iloscKolumn = opt.odczytajIloscKolumn();
         this.Zawartosc = opt.odczytajZawartoscPliku(this.iloscWierszy, this.iloscKolumn);
@@ -45,7 +45,7 @@ public class Labirynt {
 
     }
 
-    Labirynt(OdczytPlikuBinarnego opb) {
+    private Labirynt(OdczytPlikuBinarnego opb) {
         Binarny b = opb.odczytNaglowka();
         this.iloscWierszy = b.getLines();
         this.iloscKolumn = b.getColumns();
@@ -62,6 +62,63 @@ public class Labirynt {
             this.Rozwiazany = false;
         }
     }
+    
+    
+    public static Labirynt getInstance(OdczytPlikuBinarnego opb){
+        if(ins == null){
+            ins = new Labirynt(opb);
+        }else{
+            zamienDane(opb);
+        }
+        
+        return ins;
+        
+    }
+    
+    public static Labirynt getInstance(OdczytPlikuTekstowego opt){
+        if(ins == null){
+            ins =  new Labirynt(opt);
+        }else{
+            zamienDane(opt);
+        }
+        
+        return ins;
+        
+    }
+    
+    private static void zamienDane(OdczytPlikuBinarnego opb){
+        Binarny b = opb.odczytNaglowka();
+        ins.iloscWierszy = b.getLines();
+        ins.iloscKolumn = b.getColumns();
+        ins.Zawartosc = opb.odczytZawartosci(b);
+        ins.Poczatek = new int[2];
+        ins.Poczatek[0] = b.getEntry_y() - 1;
+        ins.Poczatek[1] = b.getEntry_x() - 1;
+        ins.Koniec = new int[2];
+        ins.Koniec[0] = b.getExit_y() - 1;
+        ins.Koniec[1] = b.getExit_x() - 1;
+        if (b.getSollution_off() != 0) {
+            ins.Rozwiazany = true;
+        } else {
+            ins.Rozwiazany = false;
+        }
+        
+    }
+    
+    private static void zamienDane(OdczytPlikuTekstowego opt){
+        ins.iloscWierszy = opt.odczytajIloscWierszy();
+        ins.iloscKolumn = opt.odczytajIloscKolumn();
+        ins.Zawartosc = opt.odczytajZawartoscPliku(ins.iloscWierszy, ins.iloscKolumn);
+        ins.Poczatek = opt.odczytajWPoczatku();
+        ins.Koniec = opt.odczytajWKonca();
+        ins.Rozwiazany = opt.sprawdzRozwiazanie(ins.iloscWierszy, ins.iloscKolumn);
+        
+    }
+    
+    
+    
+    
+    
 
     public void printLabirynt() {
         for (int i = 0; i < this.iloscWierszy; ++i) {

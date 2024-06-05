@@ -148,10 +148,10 @@ public class GUI extends JFrame implements ActionListener, ChangeListener {
                 op = new OdczytPliku(this.sciezkaPliku);
                 if (op.sprawdzTektowy() == true) {
                     JOptionPane.showMessageDialog(this, "Wczytano plik w formacie tekstowym", "Labirynt: info", JOptionPane.INFORMATION_MESSAGE);
-                    this.l = new Labirynt(new OdczytPlikuTekstowego(this.sciezkaPliku));
+                     this.l = Labirynt.getInstance(new OdczytPlikuTekstowego(this.sciezkaPliku));
                 } else if (op.sprawdzBinarny() == true) {
                     JOptionPane.showMessageDialog(this, "Wczytano plik w formacie binarnym", "Labirynt: info", JOptionPane.INFORMATION_MESSAGE);
-                    this.l = new Labirynt(new OdczytPlikuBinarnego(this.sciezkaPliku));
+                    this.l = Labirynt.getInstance(new OdczytPlikuBinarnego(this.sciezkaPliku));
                 } else {
                     JOptionPane.showMessageDialog(this, "Nieprawidłowy format pliku", "Labirynt: info", JOptionPane.ERROR_MESSAGE);
                     return;
